@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Al Rehab</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_latest_news_and_events">آخر الأخبار والأحداث</string>
+    <string name="tab_news">أهم الأخبار</string>
+    <string name="tab_events">أهم الأحداث</string>
+    <string name="tab_communicaion_messages">رسائل التواصل</string>
+</resources>
