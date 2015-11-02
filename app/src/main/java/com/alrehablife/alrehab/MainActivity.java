@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.design.widget.TabLayout;
+import android.widget.TabHost;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,7 +35,28 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        TabHost.TabSpec tabNews = tabHost.newTabSpec("news");
+        tabNews.setContent(R.id.tabNewsContent);
+        tabNews.setIndicator(getString(R.string.tab_news));
+        tabHost.addTab(tabNews);
+
+
+        TabHost.TabSpec tabEvents = tabHost.newTabSpec("events");
+        tabEvents.setContent(R.id.tabEventsContent);
+        tabEvents.setIndicator(getString(R.string.tab_events));
+        tabHost.addTab(tabEvents);
+
+        TabHost.TabSpec tabCommunicaionMessages = tabHost.newTabSpec("communicaion_messages");
+        tabCommunicaionMessages.setContent(R.id.tabCommunicaionMessages);
+        tabCommunicaionMessages.setIndicator(getString(R.string.tab_communicaion_messages));
+        tabHost.addTab(tabCommunicaionMessages);
+
     }
+
 
     @Override
     public void onBackPressed() {
