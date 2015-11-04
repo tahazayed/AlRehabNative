@@ -9,4 +9,6 @@
     <string name="tab_news">أهم الأخبار</string>
     <string name="tab_events">أهم الأحداث</string>
     <string name="tab_communicaion_messages">رسائل التواصل</string>
+    <string name="contactUs">Contact us</string>
+    <string name="action_clear_cache">Clear cache</string>
 </resources>
