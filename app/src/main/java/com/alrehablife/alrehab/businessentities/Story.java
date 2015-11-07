@@ -1,4 +1,4 @@
-package com.alrehablife.alrehab.DB;
+package com.alrehablife.alrehab.businessentities;
 
 import java.util.Date;
 
@@ -8,7 +8,6 @@ public class Story {
     private String _body;
     private Date _publishdate;
     private Date _expirationdate;
-    private boolean _isvisable;
     private String _category;
     private boolean _isprivate;
     private String _imageUrl;
@@ -23,12 +22,11 @@ public class Story {
     }
 
 
-    public void set_id(int id,
+    public Story(int id,
                        String title,
                        String body,
                        Date publishdate,
                        Date expirationdate,
-                       boolean isvisable,
                        String category,
                        boolean isprivate,
                        String imageUrl,
@@ -42,7 +40,6 @@ public class Story {
         this._body = body;
         this._publishdate = publishdate;
         this._expirationdate = expirationdate;
-        this._isvisable = isvisable;
         this._category = category;
         this._isprivate = isprivate;
         this._imageUrl = imageUrl;
@@ -54,11 +51,13 @@ public class Story {
 
     }
 
-
     public int get_id() {
         return _id;
     }
 
+    public void set_id(int _id) {
+        this._id = _id;
+    }
 
     public String get_title() {
         return _title;
@@ -93,13 +92,6 @@ public class Story {
         this._expirationdate = _expirationdate;
     }
 
-    public boolean is_isvisable() {
-        return _isvisable;
-    }
-
-    public void set_isvisable(boolean _isvisable) {
-        this._isvisable = _isvisable;
-    }
 
     public String get_category() {
         return _category;
@@ -109,7 +101,7 @@ public class Story {
         this._category = _category;
     }
 
-    public boolean is_isprivate() {
+    public boolean get_isprivate() {
         return _isprivate;
     }
 
@@ -133,7 +125,7 @@ public class Story {
         this._description = _description;
     }
 
-    public boolean is_isfeatured() {
+    public boolean get_isfeatured() {
         return _isfeatured;
     }
 
@@ -141,7 +133,7 @@ public class Story {
         this._isfeatured = _isfeatured;
     }
 
-    public boolean is_iscommunicationmessage() {
+    public boolean get_iscommunicationmessage() {
         return _iscommunicationmessage;
     }
 
@@ -157,7 +149,7 @@ public class Story {
         this._storytimestamp = _storytimestamp;
     }
 
-    public boolean is_isbookmarked() {
+    public boolean get_isbookmarked() {
         return _isbookmarked;
     }
 
