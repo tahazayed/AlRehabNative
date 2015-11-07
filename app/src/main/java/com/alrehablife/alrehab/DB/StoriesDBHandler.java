@@ -9,7 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.alrehablife.alrehab.businessentities.Story;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class StoriesDBHandler extends SQLiteOpenHelper {
 
@@ -94,10 +96,33 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public int updateStory(Story story) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_TITLE, story.get_title());
+        values.put(COLUMN_BODY, story.get_body());
+        values.put(COLUMN_PUBLISHDATE, dateFormat.format(story.get_publishdate()));
+        values.put(COLUMN_EXPIRATIONDATE, dateFormat.format(story.get_expirationdate()));
+        values.put(COLUMN_CATEGORY, story.get_category());
+        values.put(COLUMN_ISPRIVATE, story.get_isprivate());
+        values.put(COLUMN_IMAGEURL, story.get_imageUrl());
+        values.put(COLUMN_DESCRIPTION, story.get_description());
+        values.put(COLUMN_ISFEATURED, story.get_isfeatured());
+        values.put(COLUMN_ISCOMMUNICATIONMESSAGE, story.get_iscommunicationmessage());
+        values.put(COLUMN_STORYTIMESTAMP, story.get_storytimestamp());
+        values.put(COLUMN_ISBOOKMARKED, story.get_isbookmarked());
+        SQLiteDatabase db = getWritableDatabase();
+        int rows_affected = db.update(TABLE_STORIES, values, COLUMN_ID + "=?", new String[]{String.valueOf(story.get_id())});
+
+        db.close();
+        return rows_affected;
+    }
+
     //Delete a product from the database
     public void deleteStory(int id) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_STORIES + " WHERE " + COLUMN_ID + "=" + id + ";");
+        db.execSQL("DELETE FROM " + TABLE_STORIES + " WHERE " + COLUMN_ID + "=" + String.valueOf(id) + ";");
     }
 
     //    public String databaseToString() {
@@ -144,42 +169,96 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
 
 
         if (cursor != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            cursor.moveToNext();
-            try {
-                String _title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
-                String _body = cursor.getString(cursor.getColumnIndex(COLUMN_BODY));
-                Date _publishdate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(COLUMN_PUBLISHDATE)));
-                Date _expirationdate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATIONDATE)));
-                String _category = cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY));
-                boolean _isprivate = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISPRIVATE)));
-                String _imageUrl = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGEURL));
-                String _description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
-                boolean _isfeatured = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISFEATURED)));
-                boolean _iscommunicationmessage = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISCOMMUNICATIONMESSAGE)));
-                String _storytimestamp = cursor.getString(cursor.getColumnIndex(COLUMN_STORYTIMESTAMP));
-                boolean _isbookmarked = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISBOOKMARKED)));
+            if (cursor.moveToFirst()) {
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String _title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+                    String _body = cursor.getString(cursor.getColumnIndex(COLUMN_BODY));
+                    Date _publishdate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(COLUMN_PUBLISHDATE)));
+                    Date _expirationdate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATIONDATE)));
+                    String _category = cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY));
+                    boolean _isprivate = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISPRIVATE)));
+                    String _imageUrl = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGEURL));
+                    String _description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                    boolean _isfeatured = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISFEATURED)));
+                    boolean _iscommunicationmessage = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISCOMMUNICATIONMESSAGE)));
+                    String _storytimestamp = cursor.getString(cursor.getColumnIndex(COLUMN_STORYTIMESTAMP));
+                    boolean _isbookmarked = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISBOOKMARKED)));
 
-                story = new Story(id,
-                        _title,
-                        _body,
-                        _publishdate,
-                        _expirationdate,
-                        _category,
-                        _isprivate,
-                        _imageUrl,
-                        _description,
-                        _isfeatured,
-                        _iscommunicationmessage,
-                        _storytimestamp,
-                        _isbookmarked);
-            } catch (Exception e) {
-                String error = e.getMessage();
+                    story = new Story(id,
+                            _title,
+                            _body,
+                            _publishdate,
+                            _expirationdate,
+                            _category,
+                            _isprivate,
+                            _imageUrl,
+                            _description,
+                            _isfeatured,
+                            _iscommunicationmessage,
+                            _storytimestamp,
+                            _isbookmarked);
+                } catch (Exception e) {
+                    String error = e.getMessage();
+                }
             }
-
         }
         db.close();
         return story;
+
+    }
+
+    public List<Story> getStories() {
+        List<Story> lstStories = new ArrayList<>();
+
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + TABLE_STORIES, null);
+
+
+        if (cursor != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if (cursor.moveToFirst()) {
+                do {
+
+                    try {
+                        int _id = Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+                        String _title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+                        String _body = cursor.getString(cursor.getColumnIndex(COLUMN_BODY));
+                        Date _publishdate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(COLUMN_PUBLISHDATE)));
+                        Date _expirationdate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATIONDATE)));
+                        String _category = cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY));
+                        boolean _isprivate = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISPRIVATE)));
+                        String _imageUrl = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGEURL));
+                        String _description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                        boolean _isfeatured = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISFEATURED)));
+                        boolean _iscommunicationmessage = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISCOMMUNICATIONMESSAGE)));
+                        String _storytimestamp = cursor.getString(cursor.getColumnIndex(COLUMN_STORYTIMESTAMP));
+                        boolean _isbookmarked = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISBOOKMARKED)));
+
+                        lstStories.add(new Story(_id,
+                                _title,
+                                _body,
+                                _publishdate,
+                                _expirationdate,
+                                _category,
+                                _isprivate,
+                                _imageUrl,
+                                _description,
+                                _isfeatured,
+                                _iscommunicationmessage,
+                                _storytimestamp,
+                                _isbookmarked));
+                    } catch (Exception e) {
+                        String error = e.getMessage();
+                    }
+                }
+                while (cursor.moveToNext());
+            }
+        }
+        db.close();
+
+        return lstStories;
 
     }
 }
