@@ -125,27 +125,6 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_STORIES + " WHERE " + COLUMN_ID + "=" + String.valueOf(id) + ";");
     }
 
-    //    public String databaseToString() {
-//        String dbString = "";
-//        SQLiteDatabase db = getWritableDatabase();
-//        String query = "SELECT * FROM " + TABLE_STORIES + " WHERE 1";
-//
-//        //Cursor points to a location in your results
-//        Cursor c = db.rawQuery(query, null);
-//        //Move to the first row in your results
-//        c.moveToFirst();
-//
-//        //Position after the last row means the end of the results
-//        while (!c.isAfterLast()) {
-//            if (c.getString(c.getColumnIndex("productname")) != null) {
-//                dbString += c.getString(c.getColumnIndex("productname"));
-//                dbString += "\n";
-//            }
-//            c.moveToNext();
-//        }
-//        db.close();
-//        return dbString;
-//    }
     public Story getStory(int id) {
         Story story = null;
         SQLiteDatabase db = getReadableDatabase();
