@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.alrehablife.alrehab.businessentities.Story;
+import com.alrehablife.alrehab.BusinessEntities.Story;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -123,6 +123,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
     public void deleteStory(int id) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_STORIES + " WHERE " + COLUMN_ID + "=" + String.valueOf(id) + ";");
+        db.close();
     }
 
     public Story getStory(int id) {
@@ -183,6 +184,12 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
             }
         }
         db.close();
+        try {
+            if (cursor != null)
+                cursor.close();
+        } catch (Exception ex) {
+            String error = ex.getMessage();
+        }
         return story;
 
     }
@@ -236,6 +243,12 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
             }
         }
         db.close();
+        try {
+            if (cursor != null)
+                cursor.close();
+        } catch (Exception ex) {
+            String error = ex.getMessage();
+        }
 
         return lstStories;
 

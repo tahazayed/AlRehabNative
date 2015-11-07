@@ -1,4 +1,4 @@
-package com.alrehablife.alrehab.businessentities;
+package com.alrehablife.alrehab.BusinessEntities;
 
 import java.util.Date;
 
