@@ -89,7 +89,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, story.get_description());
         values.put(COLUMN_ISFEATURED, story.get_isfeatured());
         values.put(COLUMN_ISCOMMUNICATIONMESSAGE, story.get_iscommunicationmessage());
-        values.put(COLUMN_STORYTIMESTAMP, story.get_storytimestamp());
+        values.put(COLUMN_STORYTIMESTAMP, story.get_timestamp());
         values.put(COLUMN_ISBOOKMARKED, story.get_isbookmarked());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_STORIES, null, values);
@@ -110,7 +110,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, story.get_description());
         values.put(COLUMN_ISFEATURED, story.get_isfeatured());
         values.put(COLUMN_ISCOMMUNICATIONMESSAGE, story.get_iscommunicationmessage());
-        values.put(COLUMN_STORYTIMESTAMP, story.get_storytimestamp());
+        values.put(COLUMN_STORYTIMESTAMP, story.get_timestamp());
         values.put(COLUMN_ISBOOKMARKED, story.get_isbookmarked());
         SQLiteDatabase db = getWritableDatabase();
         int rows_affected = db.update(TABLE_STORIES, values, COLUMN_ID + "=?", new String[]{String.valueOf(story.get_id())});

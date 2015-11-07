@@ -14,7 +14,7 @@ public class Story {
     private String _description;
     private boolean _isfeatured;
     private boolean _iscommunicationmessage;
-    private String _storytimestamp;
+    private String _timestamp;
     private boolean _isbookmarked;
 
 
@@ -46,7 +46,7 @@ public class Story {
         this._description = description;
         this._isfeatured = isfeatured;
         this._iscommunicationmessage = iscommunicationmessage;
-        this._storytimestamp = storytimestamp;
+        this._timestamp = storytimestamp;
         this._isbookmarked = isbookmarked;
 
     }
@@ -141,12 +141,12 @@ public class Story {
         this._iscommunicationmessage = _iscommunicationmessage;
     }
 
-    public String get_storytimestamp() {
-        return _storytimestamp;
+    public String get_timestamp() {
+        return _timestamp;
     }
 
-    public void set_storytimestamp(String _storytimestamp) {
-        this._storytimestamp = _storytimestamp;
+    public void set_timestamp(String _timestamp) {
+        this._timestamp = _timestamp;
     }
 
     public boolean get_isbookmarked() {
