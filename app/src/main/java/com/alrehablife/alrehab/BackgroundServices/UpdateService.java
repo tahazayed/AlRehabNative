@@ -1,4 +1,4 @@
-package com.alrehablife.alrehab;
+package com.alrehablife.alrehab.BackgroundServices;
 
 import android.app.Service;
 import android.content.Intent;
@@ -18,11 +18,11 @@ public class UpdateService extends Service {
     }
 
     public void updateDB() {
-
+        new StoryUpdateJSON().execute("http://test.alrehablife.com/api/stories/?count=3");
     }
 
     public class UpdateServiceBinder extends Binder {
-        UpdateService getService() {
+        public UpdateService getService() {
             return UpdateService.this;
         }
     }

@@ -16,7 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
-import com.alrehablife.alrehab.UpdateService.UpdateServiceBinder;
+import com.alrehablife.alrehab.BackgroundServices.UpdateService;
+import com.alrehablife.alrehab.BackgroundServices.UpdateService.UpdateServiceBinder;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
