@@ -1,9 +1,11 @@
 package com.alrehablife.alrehab;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.os.IBinder;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,16 +14,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.design.widget.TabLayout;
 import android.widget.TabHost;
+
+import com.alrehablife.alrehab.UpdateService.UpdateServiceBinder;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    UpdateService updateService;
+    boolean isBound = false;
+    private ServiceConnection updateServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            UpdateServiceBinder binder = (UpdateServiceBinder) service;
+            updateService = binder.getService();
+            isBound = true;
+
+            updateService.updateDB();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent i = new Intent(this, UpdateService.class);
+        bindService(i, updateServiceConnection, Context.BIND_AUTO_CREATE);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -56,7 +80,6 @@ public class MainActivity extends AppCompatActivity
         tabHost.addTab(tabCommunicaionMessages);
 
     }
-
 
     @Override
     public void onBackPressed() {
