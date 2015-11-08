@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.alrehablife.alrehab.JSON.StoriesJSONHandler;
+import com.alrehablife.alrehab.R;
+
 public class UpdateService extends Service {
 
     private final IBinder updateServiceBinder = new UpdateServiceBinder();
@@ -18,7 +21,8 @@ public class UpdateService extends Service {
     }
 
     public void updateDB() {
-        new StoryUpdateJSON().execute("http://test.alrehablife.com/api/stories/?count=3");
+
+        new StoriesJSONHandler().execute(getString(R.string.NewsAPIUrl));
     }
 
     public class UpdateServiceBinder extends Binder {

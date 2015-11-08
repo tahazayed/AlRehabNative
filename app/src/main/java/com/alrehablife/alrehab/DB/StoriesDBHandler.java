@@ -33,6 +33,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "storiesdb.db";
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     //We need to pass database information along to superclass
     public StoriesDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -97,7 +98,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
     }
 
     public int updateStory(Story story) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_TITLE, story.get_title());
