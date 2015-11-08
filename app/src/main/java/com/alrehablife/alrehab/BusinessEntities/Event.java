@@ -20,7 +20,7 @@ public class Event {
     private String _duration;
     private float _ticketprice;
 
-    private String _eventtimestamp;
+    private String _timestamp;
     private String _placename;
     private boolean _isbookmarked;
 
@@ -31,40 +31,40 @@ public class Event {
     }
 
 
-    public Event(int _id,
-                 String _title,
-                 String _body,
-                 Date _eventdate,
-                 Date _expirationdate,
-                 boolean _isprivate,
-                 String _imageUrl,
-                 String _description,
-                 String _category,
-                 String _address,
-                 String _telephone,
-                 String _duration,
-                 float _ticketprice,
-                 String _eventtimestamp,
-                 String _placename,
-                 boolean _isbookmarked,
-                 boolean _isdeleted) {
-        this._address = _address;
-        this._body = _body;
-        this._category = _category;
-        this._description = _description;
-        this._duration = _duration;
-        this._eventdate = _eventdate;
-        this._expirationdate = _expirationdate;
-        this._id = _id;
-        this._imageUrl = _imageUrl;
-        this._isbookmarked = _isbookmarked;
-        this._isdeleted = _isdeleted;
-        this._isprivate = _isprivate;
-        this._placename = _placename;
-        this._telephone = _telephone;
-        this._ticketprice = _ticketprice;
-        this._eventtimestamp = _eventtimestamp;
-        this._title = _title;
+    public Event(int id,
+                 String title,
+                 String body,
+                 Date eventdate,
+                 Date expirationdate,
+                 boolean isprivate,
+                 String imageUrl,
+                 String description,
+                 String category,
+                 String address,
+                 String telephone,
+                 String duration,
+                 float ticketprice,
+                 String timestamp,
+                 String placename,
+                 boolean isbookmarked,
+                 boolean isdeleted) {
+        this._address = address;
+        this._body = body;
+        this._category = category;
+        this._description = description;
+        this._duration = duration;
+        this._eventdate = eventdate;
+        this._expirationdate = expirationdate;
+        this._id = id;
+        this._imageUrl = imageUrl;
+        this._isbookmarked = isbookmarked;
+        this._isdeleted = isdeleted;
+        this._isprivate = isprivate;
+        this._placename = placename;
+        this._telephone = telephone;
+        this._ticketprice = ticketprice;
+        this._timestamp = timestamp;
+        this._title = title;
     }
 
     public int get_id() {
@@ -171,12 +171,12 @@ public class Event {
         this._ticketprice = _ticketprice;
     }
 
-    public String get_eventtimestamp() {
-        return _eventtimestamp;
+    public String get_timestamp() {
+        return _timestamp;
     }
 
-    public void set_eventtimestamp(String _eventtimestamp) {
-        this._eventtimestamp = _eventtimestamp;
+    public void set_timestamp(String _timestamp) {
+        this._timestamp = _timestamp;
     }
 
     public String get_placename() {

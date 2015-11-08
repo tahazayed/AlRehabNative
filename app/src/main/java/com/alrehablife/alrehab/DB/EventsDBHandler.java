@@ -103,7 +103,7 @@ public class EventsDBHandler extends SQLiteOpenHelper {
             values.put(COLUMN_DURATION, event.get_duration());
             values.put(COLUMN_TICKETPRICE, event.get_ticketprice());
             values.put(COLUMN_PLACENAME, event.get_placename());
-            values.put(COLUMN_EVENTTIMESTAMP, event.get_eventtimestamp());
+            values.put(COLUMN_EVENTTIMESTAMP, event.get_timestamp());
             values.put(COLUMN_ISBOOKMARKED, event.get_isbookmarked());
             values.put(COLUMN_ISDELETED, event.get_isdeleted());
 
@@ -132,7 +132,7 @@ public class EventsDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_DURATION, event.get_duration());
         values.put(COLUMN_TICKETPRICE, event.get_ticketprice());
         values.put(COLUMN_PLACENAME, event.get_placename());
-        values.put(COLUMN_EVENTTIMESTAMP, event.get_eventtimestamp());
+        values.put(COLUMN_EVENTTIMESTAMP, event.get_timestamp());
         values.put(COLUMN_ISBOOKMARKED, event.get_isbookmarked());
         values.put(COLUMN_ISDELETED, event.get_isdeleted());
         SQLiteDatabase db = getWritableDatabase();

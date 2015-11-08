@@ -32,7 +32,7 @@ public class Story {
                        String description,
                        boolean isfeatured,
                        boolean iscommunicationmessage,
-                       String storytimestamp,
+                 String timestamp,
                  boolean isbookmarked,
                  boolean _isdeleted) {
         this._id = id;
@@ -46,7 +46,7 @@ public class Story {
         this._description = description;
         this._isfeatured = isfeatured;
         this._iscommunicationmessage = iscommunicationmessage;
-        this._timestamp = storytimestamp;
+        this._timestamp = timestamp;
         this._isbookmarked = isbookmarked;
         this._isdeleted = _isdeleted;
 
