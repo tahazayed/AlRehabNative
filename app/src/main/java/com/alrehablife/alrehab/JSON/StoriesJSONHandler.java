@@ -6,7 +6,6 @@ import com.alrehablife.alrehab.BusinessEntities.Story;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,7 +33,12 @@ public class StoriesJSONHandler extends AsyncTask<String, String, List<Story>> {
     public static final String COLUMN_ISFEATURED = "IsFeatured";
     public static final String COLUMN_ISCOMMUNICATIONMESSAGE = "IsCommunicationMessage";
     public static final String COLUMN_STORYTIMESTAMP = "TimeStamp";
+    private final StoriesJSONHandlerClient mClient;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    public StoriesJSONHandler(StoriesJSONHandlerClient client) {
+        mClient = client;
+    }
 
     @Override
     protected void onPreExecute() {
@@ -87,7 +90,7 @@ public class StoriesJSONHandler extends AsyncTask<String, String, List<Story>> {
                     boolean _isfeatured = Boolean.parseBoolean(finalObject.getString(COLUMN_ISFEATURED));
                     boolean _iscommunicationmessage = Boolean.parseBoolean(finalObject.getString(COLUMN_ISCOMMUNICATIONMESSAGE));
                     String _storytimestamp = finalObject.getString(COLUMN_STORYTIMESTAMP);
-                    boolean _isbookmarked = false;
+                    //boolean _isbookmarked = false;
                     StoryList.add(new Story(_id,
                             _title,
                             _body,
@@ -100,7 +103,7 @@ public class StoriesJSONHandler extends AsyncTask<String, String, List<Story>> {
                             _isfeatured,
                             _iscommunicationmessage,
                             _storytimestamp,
-                            _isbookmarked));
+                            false));
 
 //
 //                    List<Story.Cast> castList = new ArrayList<>();
@@ -117,13 +120,17 @@ public class StoriesJSONHandler extends AsyncTask<String, String, List<Story>> {
             }
 
 
-        } catch (MalformedURLException e) {
+        }
+//        catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+        catch (Exception e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } finally {
+        }
+//        catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+        finally {
             if (connection != null) {
                 connection.disconnect();
             }
@@ -140,8 +147,13 @@ public class StoriesJSONHandler extends AsyncTask<String, String, List<Story>> {
 
     @Override
     protected void onPostExecute(List<Story> result) {
-        super.onPostExecute(result);
 
-        // TODO need to set data to the list
+        mClient.onStoriesJSONHandlerClientResult(result);
+
+
+    }
+
+    public interface StoriesJSONHandlerClient {
+        void onStoriesJSONHandlerClientResult(List<Story> result);
     }
 }

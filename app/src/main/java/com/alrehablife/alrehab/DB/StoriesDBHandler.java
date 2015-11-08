@@ -40,13 +40,17 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
+    public StoriesDBHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_STORIES + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY NOT NULL, " +
                 COLUMN_TITLE + " nvarchar(500) NOT NULL," +
 
-                COLUMN_BODY + " nvarchar(max) NOT NULL," +
+                COLUMN_BODY + " nvarchar(8000) NOT NULL," +
 
                 COLUMN_PUBLISHDATE + " datetime NOT NULL," +
 
@@ -77,24 +81,29 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
 
     //Add a new row to the database
     public void addStory(Story story) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, story.get_id());
-        values.put(COLUMN_TITLE, story.get_title());
-        values.put(COLUMN_BODY, story.get_body());
-        values.put(COLUMN_PUBLISHDATE, dateFormat.format(story.get_publishdate()));
-        values.put(COLUMN_EXPIRATIONDATE, dateFormat.format(story.get_expirationdate()));
-        values.put(COLUMN_CATEGORY, story.get_category());
-        values.put(COLUMN_ISPRIVATE, story.get_isprivate());
-        values.put(COLUMN_IMAGEURL, story.get_imageUrl());
-        values.put(COLUMN_DESCRIPTION, story.get_description());
-        values.put(COLUMN_ISFEATURED, story.get_isfeatured());
-        values.put(COLUMN_ISCOMMUNICATIONMESSAGE, story.get_iscommunicationmessage());
-        values.put(COLUMN_STORYTIMESTAMP, story.get_timestamp());
-        values.put(COLUMN_ISBOOKMARKED, story.get_isbookmarked());
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_STORIES, null, values);
-        db.close();
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_ID, story.get_id());
+            values.put(COLUMN_TITLE, story.get_title());
+            values.put(COLUMN_BODY, story.get_body());
+            values.put(COLUMN_PUBLISHDATE, dateFormat.format(story.get_publishdate()));
+            values.put(COLUMN_EXPIRATIONDATE, dateFormat.format(story.get_expirationdate()));
+            values.put(COLUMN_CATEGORY, story.get_category());
+            values.put(COLUMN_ISPRIVATE, story.get_isprivate());
+            values.put(COLUMN_IMAGEURL, story.get_imageUrl());
+            values.put(COLUMN_DESCRIPTION, story.get_description());
+            values.put(COLUMN_ISFEATURED, story.get_isfeatured());
+            values.put(COLUMN_ISCOMMUNICATIONMESSAGE, story.get_iscommunicationmessage());
+            values.put(COLUMN_STORYTIMESTAMP, story.get_timestamp());
+            values.put(COLUMN_ISBOOKMARKED, story.get_isbookmarked());
+
+            db.insert(TABLE_STORIES, null, values);
+            db.close();
+        } catch (Exception ex) {
+            String error = ex.getMessage();
+        }
     }
 
     public int updateStory(Story story) {
