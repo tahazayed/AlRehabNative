@@ -24,10 +24,10 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
     private static Timer timer = new Timer();
 
     private boolean isRunning = false;
-
+    private boolean IsDebug = true;
     @Override
     public void onCreate() {
-        Log.i(TAG, "Service onCreate");
+        if (IsDebug) Log.d(TAG, "Service onCreate");
 
         isRunning = true;
     }
@@ -35,7 +35,7 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Log.i(TAG, "Service onStartCommand");
+        if (IsDebug) Log.d(TAG, "Service onStartCommand");
 
         timer.scheduleAtFixedRate(
 
@@ -47,7 +47,7 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
 
                     }
                 }, 1000, UPDATE_INTERVAL);
-        Log.i(TAG, "Timer started....");
+        if (IsDebug) Log.d(TAG, "Timer started....");
 
         return Service.START_STICKY;
     }
@@ -55,7 +55,7 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
 
     @Override
     public IBinder onBind(Intent arg0) {
-        Log.i(TAG, "Service onBind");
+        if (IsDebug) Log.d(TAG, "Service onBind");
         return null;
     }
 
@@ -63,9 +63,9 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
 
         try {
             new StoriesJSONHandler(UpdateDBService.this).execute(getString(R.string.NewsAPIUrl));
-            Log.i(TAG, "StoriesJSONHandler invoked...");
+            if (IsDebug) Log.d(TAG, "StoriesJSONHandler invoked...");
             new EventsJSONHandler(UpdateDBService.this).execute(getString(R.string.EventsAPIUrl));
-            Log.i(TAG, "EventsJSONHandler invoked...");
+            if (IsDebug) Log.d(TAG, "EventsJSONHandler invoked...");
         } catch (Exception e) {
             String error = e.getMessage();
         }
@@ -78,14 +78,14 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
         isRunning = false;
 
         if (timer != null) timer.cancel();
-        Log.i(TAG, "Timer stopped...");
+        if (IsDebug) Log.d(TAG, "Timer stopped...");
 
-        Log.i(TAG, "Service onDestroy");
+        if (IsDebug) Log.d(TAG, "Service onDestroy");
     }
 
     @Override
     public void onStoriesJSONHandlerClientResult(List<Story> list) {
-        Log.i(TAG, "onStoriesJSONHandlerClientResult invoked..." + list.size());
+        if (IsDebug) Log.d(TAG, "onStoriesJSONHandlerClientResult invoked..." + list.size());
         Story[] lstStories = list.toArray(new Story[list.size()]);
         int size = lstStories.length;
         StoriesDBHandler db = new StoriesDBHandler(getApplicationContext());
@@ -111,7 +111,7 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
 
     @Override
     public void onEventsJSONHandlerClientResult(List<Event> list) {
-        Log.i(TAG, "onEventsJSONHandlerClientResult invoked..." + list.size());
+        if (IsDebug) Log.d(TAG, "onEventsJSONHandlerClientResult invoked..." + list.size());
         Event[] lstEvents = list.toArray(new Event[list.size()]);
         int size = lstEvents.length;
         EventsDBHandler db = new EventsDBHandler(getApplicationContext());
