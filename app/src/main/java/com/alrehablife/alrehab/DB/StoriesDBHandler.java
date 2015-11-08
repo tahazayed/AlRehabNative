@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import com.alrehablife.alrehab.BusinessEntities.Story;
 
@@ -223,12 +224,33 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
 
     }
 
-    public List<Story> getStories() {
+    public List<Story> getAllStories() {
+        return getStories(null);
+
+    }
+
+    public List<Story> getFeaturesNews() {
+        return getStories(COLUMN_ISFEATURED + "=1");
+
+    }
+
+    public List<Story> getCommunicationMessage() {
+        return getStories(COLUMN_ISCOMMUNICATIONMESSAGE + "=1");
+
+    }
+
+    @NonNull
+    private List<Story> getStories(String whereCondition) {
         List<Story> lstStories = new ArrayList<>();
 
 
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + TABLE_STORIES, null);
+        String query = "select * from " + TABLE_STORIES;
+        if (whereCondition != null) {
+            query += " WHERE " + whereCondition + ";";
+
+        }
+        Cursor cursor = db.rawQuery(query, null);
 
 
         if (cursor != null) {
@@ -282,6 +304,5 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
         }
 
         return lstStories;
-
     }
 }
