@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.alrehablife.alrehab.BackgroundServices.UpdateDBService;
+
 public class splashscreen extends Activity {
 
     //Set waktu lama splashscreen
@@ -15,11 +17,14 @@ public class splashscreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.splashscreen);
+
 
         new Handler().postDelayed(new Runnable() {
 
@@ -41,6 +46,8 @@ public class splashscreen extends Activity {
             }
         }, splashInterval);
 
-    };
+        Intent intent = new Intent(this, UpdateDBService.class);
+        startService(intent);
+    }
 
 }

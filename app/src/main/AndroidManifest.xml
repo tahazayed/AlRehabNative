@@ -30,7 +30,9 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
 
-        <service android:name=".BackgroundServices.UpdateService" />
+        <service
+            android:name=".BackgroundServices.UpdateDBService"
+            android:exported="false" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

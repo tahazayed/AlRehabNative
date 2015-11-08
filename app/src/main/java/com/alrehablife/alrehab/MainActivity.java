@@ -1,11 +1,6 @@
 package com.alrehablife.alrehab;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,36 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
-import com.alrehablife.alrehab.BackgroundServices.UpdateService;
-import com.alrehablife.alrehab.BackgroundServices.UpdateService.UpdateServiceBinder;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    UpdateService updateService;
-    boolean isBound = false;
-    private ServiceConnection updateServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            UpdateServiceBinder binder = (UpdateServiceBinder) service;
-            updateService = binder.getService();
-            isBound = true;
 
-            updateService.updateDB();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            isBound = false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent i = new Intent(this, UpdateService.class);
-        bindService(i, updateServiceConnection, Context.BIND_AUTO_CREATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,6 +53,7 @@ public class MainActivity extends AppCompatActivity
         tabCommunicaionMessages.setContent(R.id.tabCommunicaionMessages);
         tabCommunicaionMessages.setIndicator(getString(R.string.tab_communicaion_messages));
         tabHost.addTab(tabCommunicaionMessages);
+
 
     }
 
