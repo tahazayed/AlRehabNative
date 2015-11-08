@@ -103,6 +103,7 @@ public class StoriesJSONHandler extends AsyncTask<String, String, List<Story>> {
                             _isfeatured,
                             _iscommunicationmessage,
                             _storytimestamp,
+                            false,
                             false));
 
 //

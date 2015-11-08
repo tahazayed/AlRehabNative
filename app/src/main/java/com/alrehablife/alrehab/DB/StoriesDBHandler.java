@@ -30,6 +30,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_ISCOMMUNICATIONMESSAGE = "iscommunicationmessage";
     public static final String COLUMN_STORYTIMESTAMP = "storytimestamp";
     public static final String COLUMN_ISBOOKMARKED = "isbookmarked";
+    public static final String COLUMN_ISDELETED = "isdeleted";
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "storiesdb.db";
@@ -68,7 +69,8 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
 
                 COLUMN_ISCOMMUNICATIONMESSAGE + " BOOLEAN NOT NULL," +
                 COLUMN_STORYTIMESTAMP + " NUMERIC NOT NULL," +
-                COLUMN_ISBOOKMARKED + " BOOLEAN NOT NULL" +
+                COLUMN_ISBOOKMARKED + " BOOLEAN NOT NULL," +
+                COLUMN_ISDELETED + " BOOLEAN NOT NULL" +
                 ");";
         db.execSQL(query);
     }
@@ -98,6 +100,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
             values.put(COLUMN_ISCOMMUNICATIONMESSAGE, story.get_iscommunicationmessage());
             values.put(COLUMN_STORYTIMESTAMP, story.get_timestamp());
             values.put(COLUMN_ISBOOKMARKED, story.get_isbookmarked());
+            values.put(COLUMN_ISDELETED, false);
 
             db.insert(TABLE_STORIES, null, values);
             db.close();
@@ -122,6 +125,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_ISCOMMUNICATIONMESSAGE, story.get_iscommunicationmessage());
         values.put(COLUMN_STORYTIMESTAMP, story.get_timestamp());
         values.put(COLUMN_ISBOOKMARKED, story.get_isbookmarked());
+        values.put(COLUMN_ISDELETED, story.get_isdeleted());
         SQLiteDatabase db = getWritableDatabase();
         int rows_affected = db.update(TABLE_STORIES, values, COLUMN_ID + "=?", new String[]{String.valueOf(story.get_id())});
 
@@ -129,10 +133,22 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
         return rows_affected;
     }
 
-    //Delete a product from the database
+
     public void deleteStory(int id) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_STORIES + " WHERE " + COLUMN_ID + "=" + String.valueOf(id) + ";");
+        db.close();
+    }
+
+    public void markAllStoriesDeleted() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE " + TABLE_STORIES + " set " + COLUMN_ISDELETED + "=1 WHERE 1;");
+        db.close();
+    }
+
+    public void deleteStoriesMrkedDeleted() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_STORIES + " WHERE " + COLUMN_ISDELETED + "=1;");
         db.close();
     }
 
@@ -152,7 +168,8 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
                         COLUMN_ISFEATURED,
                         COLUMN_ISCOMMUNICATIONMESSAGE,
                         COLUMN_STORYTIMESTAMP,
-                        COLUMN_ISBOOKMARKED},
+                        COLUMN_ISBOOKMARKED,
+                        COLUMN_ISDELETED},
                 COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)},
                 null, null, null, null);
@@ -174,6 +191,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
                     boolean _iscommunicationmessage = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISCOMMUNICATIONMESSAGE)));
                     String _storytimestamp = cursor.getString(cursor.getColumnIndex(COLUMN_STORYTIMESTAMP));
                     boolean _isbookmarked = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISBOOKMARKED)));
+                    boolean _isdeleted = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISDELETED)));
 
                     story = new Story(id,
                             _title,
@@ -187,7 +205,8 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
                             _isfeatured,
                             _iscommunicationmessage,
                             _storytimestamp,
-                            _isbookmarked);
+                            _isbookmarked,
+                            _isdeleted);
                 } catch (Exception e) {
                     String error = e.getMessage();
                 }
@@ -231,6 +250,7 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
                         boolean _iscommunicationmessage = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISCOMMUNICATIONMESSAGE)));
                         String _storytimestamp = cursor.getString(cursor.getColumnIndex(COLUMN_STORYTIMESTAMP));
                         boolean _isbookmarked = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISBOOKMARKED)));
+                        boolean _isdeleted = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_ISDELETED)));
 
                         lstStories.add(new Story(_id,
                                 _title,
@@ -244,7 +264,8 @@ public class StoriesDBHandler extends SQLiteOpenHelper {
                                 _isfeatured,
                                 _iscommunicationmessage,
                                 _storytimestamp,
-                                _isbookmarked));
+                                _isbookmarked,
+                                _isdeleted));
                     } catch (Exception e) {
                         String error = e.getMessage();
                     }

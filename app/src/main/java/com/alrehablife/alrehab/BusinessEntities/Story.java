@@ -16,11 +16,10 @@ public class Story {
     private boolean _iscommunicationmessage;
     private String _timestamp;
     private boolean _isbookmarked;
-
+    private boolean _isdeleted;
 
     public Story() {
     }
-
 
     public Story(int id,
                        String title,
@@ -34,7 +33,8 @@ public class Story {
                        boolean isfeatured,
                        boolean iscommunicationmessage,
                        String storytimestamp,
-                       boolean isbookmarked) {
+                 boolean isbookmarked,
+                 boolean _isdeleted) {
         this._id = id;
         this._title = title;
         this._body = body;
@@ -48,7 +48,16 @@ public class Story {
         this._iscommunicationmessage = iscommunicationmessage;
         this._timestamp = storytimestamp;
         this._isbookmarked = isbookmarked;
+        this._isdeleted = _isdeleted;
 
+    }
+
+    public boolean get_isdeleted() {
+        return _isdeleted;
+    }
+
+    public void set_isdeleted(boolean _isdeleted) {
+        this._isdeleted = _isdeleted;
     }
 
     public int get_id() {

@@ -34,6 +34,7 @@ public class UpdateService extends Service implements StoriesJSONHandler.Stories
         Story[] lstStories = list.toArray(new Story[list.size()]);
         int size = lstStories.length;
         StoriesDBHandler db = new StoriesDBHandler(getApplicationContext());
+        db.markAllStoriesDeleted();
         for (Story story : lstStories) {
             Story oldStory = db.getStory(story.get_id());
 
@@ -47,6 +48,7 @@ public class UpdateService extends Service implements StoriesJSONHandler.Stories
 
             db.addStory(story);
         }
+        db.deleteStoriesMrkedDeleted();
 
 
     }
