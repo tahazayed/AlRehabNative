@@ -26,6 +26,8 @@ import com.alrehablife.alrehab.DB.EventsDBHandler;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,9 +74,27 @@ public class MainActivity extends AppCompatActivity
         tabCommunicaionMessages.setIndicator(getString(R.string.tab_communicaion_messages));
         tabHost.addTab(tabCommunicaionMessages);
 
-        EventsListView = (ListView) findViewById(R.id.listView);
+        //Event currentContact = Events.get(position);
 
-        populateList();
+        final EventsDBHandler eventHandler = new EventsDBHandler(getApplicationContext());
+        //Events = eventHandler.getAllEvents();
+
+        /*new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Events = eventHandler.getAllEvents();
+                if(Events.size() > 0)
+                {
+                    populateList(Events);
+                }
+            }
+        }, 0,500);*/
+
+        EventsListView = (ListView) findViewById(R.id.listView);
+        Events = eventHandler.getAllEvents();
+        if(Events.size() > 0)
+        {populateList(Events);}
+
     }
 
     @Override
@@ -137,30 +157,32 @@ public class MainActivity extends AppCompatActivity
 
     //my methods
 
-    private void populateList()
+    private void populateList(List<Event> lstOfEvents)
     {
-        ArrayAdapter<Event> adapter = new EventsAdapter();
+
+        ArrayAdapter<Event> adapter = new EventsAdapter(lstOfEvents);
         EventsListView.setAdapter(adapter);
     }
 
     private class EventsAdapter extends ArrayAdapter<Event>
     {
-        public EventsAdapter()
+        //listOfEvents
+        public EventsAdapter(List<Event> events)
         {
-            super(MainActivity.this, R.layout.listview_events, Events);
+
+            super(MainActivity.this, R.layout.listview_events, events);
+            //listOfEvents = events
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
+            //event = listOfEvent.get(pos);
             if(convertView == null)
             {
                 convertView = getLayoutInflater().inflate(R.layout.listview_events, parent, false);
             }
 
-            //Event currentContact = Events.get(position);
-            EventsDBHandler eventHandler = new EventsDBHandler(getApplicationContext());
-            Events = eventHandler.getAllEvents();
 
             ImageView img = (ImageView) convertView.findViewById(R.id.image);
             new DownloadImageTask(img).execute(Events.get(0).get_imageUrl());
