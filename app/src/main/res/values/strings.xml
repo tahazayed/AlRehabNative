@@ -11,8 +11,8 @@
     <string name="tab_communicaion_messages">رسائل التواصل</string>
     <string name="contactUs">Contact us</string>
     <string name="action_clear_cache">Clear cache</string>
-    <string name="FeaturedNewsAPIUrl">http://test.alrehablife.com/api/stories/?isFeatured=true</string>
-    <string name="CommunicationMessagesAPIUrl">http://test.alrehablife.com/api/stories/?isFeatured=false</string>
-    <string name="EventsAPIUrl">http://test.alrehablife.com/api/events/?count=3</string>
-    <string name="NewsAPIUrl">http://test.alrehablife.com/api/stories/?count=3</string>
+    <string name="FeaturedNewsAPIUrl">http://test.alrehablife.com/api/stories/GetFeaturedStories/</string>
+    <string name="CommunicationMessagesAPIUrl">http://test.alrehablife.com/api/stories/GetCommunicationMessages/</string>
+    <string name="EventsAPIUrl">http://test.alrehablife.com//api/events/GetEvents/?count=3</string>
+    <string name="NewsAPIUrl">http://test.alrehablife.com/api/events/GetEvents/?count=3</string>
 </resources>
