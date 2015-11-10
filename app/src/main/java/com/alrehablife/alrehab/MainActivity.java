@@ -1,5 +1,8 @@
 package com.alrehablife.alrehab;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -7,13 +10,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
+
+import com.alrehablife.alrehab.BusinessEntities.Event;
+import com.alrehablife.alrehab.DB.EventsDBHandler;
+
+import java.io.InputStream;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    List<Event> Events;
+    ListView EventsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +72,9 @@ public class MainActivity extends AppCompatActivity
         tabCommunicaionMessages.setIndicator(getString(R.string.tab_communicaion_messages));
         tabHost.addTab(tabCommunicaionMessages);
 
+        EventsListView = (ListView) findViewById(R.id.listView);
 
+        populateList();
     }
 
     @Override
@@ -113,5 +133,72 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //my methods
+
+    private void populateList()
+    {
+        ArrayAdapter<Event> adapter = new EventsAdapter();
+        EventsListView.setAdapter(adapter);
+    }
+
+    private class EventsAdapter extends ArrayAdapter<Event>
+    {
+        public EventsAdapter()
+        {
+            super(MainActivity.this, R.layout.listview_events, Events);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            if(convertView == null)
+            {
+                convertView = getLayoutInflater().inflate(R.layout.listview_events, parent, false);
+            }
+
+            //Event currentContact = Events.get(position);
+            EventsDBHandler eventHandler = new EventsDBHandler(getApplicationContext());
+            Events = eventHandler.getAllEvents();
+
+            ImageView img = (ImageView) convertView.findViewById(R.id.image);
+            new DownloadImageTask(img).execute(Events.get(0).get_imageUrl());
+
+            TextView title = (TextView)convertView.findViewById(R.id.title);
+            title.setText(Events.get(0).get_title());
+            TextView time = (TextView)convertView.findViewById(R.id.time);
+            time.setText(Events.get(0).get_timestamp());
+            TextView content = (TextView)convertView.findViewById(R.id.content);
+            content.setText(Events.get(0).get_body());
+
+            return convertView;
+        }
+
+        private class DownloadImageTask extends AsyncTask<String, Void, Bitmap>
+        {
+            ImageView bmImage;
+
+            public DownloadImageTask(ImageView bmImage) {
+                this.bmImage = bmImage;
+            }
+
+            protected Bitmap doInBackground(String... urls) {
+                String urldisplay = urls[0];
+                Bitmap mIcon11 = null;
+                try {
+                    InputStream in = new java.net.URL(urldisplay).openStream();
+                    mIcon11 = BitmapFactory.decodeStream(in);
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+                return mIcon11;
+            }
+
+            protected void onPostExecute(Bitmap result) {
+                bmImage.setImageBitmap(result);
+            }
+        }
     }
 }
