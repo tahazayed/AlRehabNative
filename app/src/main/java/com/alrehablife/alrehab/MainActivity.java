@@ -26,8 +26,6 @@ import com.alrehablife.alrehab.DB.EventsDBHandler;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -185,14 +183,14 @@ public class MainActivity extends AppCompatActivity
 
 
             ImageView img = (ImageView) convertView.findViewById(R.id.image);
-            new DownloadImageTask(img).execute(Events.get(0).get_imageUrl());
+            new DownloadImageTask(img).execute(Events.get(position).get_imageUrl());
 
             TextView title = (TextView)convertView.findViewById(R.id.title);
-            title.setText(Events.get(0).get_title());
+            title.setText(Events.get(position).get_title());
             TextView time = (TextView)convertView.findViewById(R.id.time);
-            time.setText(Events.get(0).get_timestamp());
+            time.setText(Events.get(position).get_timestamp());
             TextView content = (TextView)convertView.findViewById(R.id.content);
-            content.setText(Events.get(0).get_body());
+            content.setText(Events.get(position).get_body());
 
             return convertView;
         }

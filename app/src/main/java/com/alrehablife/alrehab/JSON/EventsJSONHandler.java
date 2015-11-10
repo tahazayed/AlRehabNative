@@ -102,6 +102,7 @@ public class EventsJSONHandler extends AsyncTask<String, String, List<Event>> {
                     float _ticketprice = Float.parseFloat(finalObject.getString(COLUMN_TICKETPRICE));
 
                     String _eventtimestamp = finalObject.getString(COLUMN_EVENTTIMESTAMP);
+                    _imageUrl = _imageUrl.replace("../", "http://test.alrehablife.com/");
 
                     EventList.add(new Event(_id,
                             _title,

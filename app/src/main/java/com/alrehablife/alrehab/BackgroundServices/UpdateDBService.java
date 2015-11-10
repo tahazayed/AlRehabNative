@@ -90,6 +90,7 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
         int size = lstStories.length;
         StoriesDBHandler db = new StoriesDBHandler(getApplicationContext());
         db.markAllStoriesDeleted();
+        db.deleteStoriesMrkedDeleted();//test only
         for (Story story : lstStories) {
             Story oldStory = db.getStory(story.get_id());
 
@@ -116,6 +117,7 @@ public class UpdateDBService extends Service implements StoriesJSONHandler.Stori
         int size = lstEvents.length;
         EventsDBHandler db = new EventsDBHandler(getApplicationContext());
         db.markAllEventsDeleted();
+        db.deleteEventsMrkedDeleted();//test only
         for (Event Event : lstEvents) {
             Event oldEvent = db.getEvent(Event.get_id());
 

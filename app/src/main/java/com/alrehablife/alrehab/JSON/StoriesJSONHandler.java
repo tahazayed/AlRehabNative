@@ -90,7 +90,7 @@ public class StoriesJSONHandler extends AsyncTask<String, String, List<Story>> {
                     boolean _isfeatured = Boolean.parseBoolean(finalObject.getString(COLUMN_ISFEATURED));
                     boolean _iscommunicationmessage = Boolean.parseBoolean(finalObject.getString(COLUMN_ISCOMMUNICATIONMESSAGE));
                     String _storytimestamp = finalObject.getString(COLUMN_STORYTIMESTAMP);
-                    //boolean _isbookmarked = false;
+                    _imageUrl = _imageUrl.replace("../", "http://test.alrehablife.com/");
                     StoryList.add(new Story(_id,
                             _title,
                             _body,
